@@ -1,7 +1,6 @@
 import React from "react";
 
-function Counter({ drones = [] }) {
-  // Count drones that are NOT allowed (red)
+function Counter({ drones }) {
   const redDrones = drones.filter(
     (drone) => !drone?.properties?.registration?.split("-")[1]?.startsWith("B")
   ).length;

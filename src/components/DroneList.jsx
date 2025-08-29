@@ -1,19 +1,15 @@
 import React from "react";
 
-/**
- * DroneList component
- * Side panel listing all drones with their info
- */
 function DroneList({ drones = [], onSelectDrone }) {
   return (
     <div
       style={{
         position: "absolute",
-        top: "0",
-        left: "0",
+        top: 0,
+        left: 0,
         width: "250px",
         height: "100%",
-        background: "#f9f9f9",
+        background: "#fff",
         borderRight: "1px solid #ddd",
         overflowY: "auto",
         padding: "15px",
@@ -23,14 +19,11 @@ function DroneList({ drones = [], onSelectDrone }) {
     >
       <h3 style={{ marginBottom: "15px" }}>📋 Drones List</h3>
 
-      {drones.length === 0 && (
-        <p style={{ color: "#888" }}>No drones available</p>
-      )}
+      {drones.length === 0 && <p style={{ color: "#888" }}>No drones available</p>}
 
       {drones.map((drone, idx) => {
         const registration = drone?.properties?.registration || "";
-        const allowed = registration.startsWith("SD-B"); // green = allowed
-        const coords = drone?.geometry?.coordinates || [0, 0];
+        const allowed = registration.split("-")[1]?.startsWith("B");
 
         return (
           <div
@@ -42,22 +35,19 @@ function DroneList({ drones = [], onSelectDrone }) {
               padding: "10px",
               marginBottom: "10px",
               cursor: "pointer",
-              background: allowed ? "#e6ffe6" : "#ffe6e6",
+              background: allowed ? "#f0fff0" : "#ffe6e6",
               transition: "background 0.2s",
             }}
           >
             <h4 style={{ margin: "0 0 5px 0" }}>{drone?.properties?.Name}</h4>
-            <p style={{ margin: "0", fontSize: "14px", color: "#555" }}>
-              Registration:{" "}
+            <p style={{ margin: 0, fontSize: "14px", color: "#555" }}>
+              Status:{" "}
               <span style={{ fontWeight: "bold", color: allowed ? "green" : "red" }}>
-                {registration}
+                {allowed ? "Allowed" : "Not Allowed"}
               </span>
             </p>
-            <p style={{ margin: "0", fontSize: "12px", color: "#777" }}>
-              Altitude: {drone?.properties?.altitude} m
-            </p>
-            <p style={{ margin: "0", fontSize: "12px", color: "#777" }}>
-              📍 {coords.join(", ")}
+            <p style={{ margin: 0, fontSize: "12px", color: "#777" }}>
+              📍 {drone?.geometry?.coordinates?.join(", ")}
             </p>
           </div>
         );

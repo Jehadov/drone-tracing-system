@@ -1,35 +1,23 @@
 import React, { useState, useEffect } from "react";
 import Map, { Marker, Popup, Source, Layer } from "react-map-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
-import { io } from "socket.io-client";
 
-const socket = io("http://localhost:9013"); // backend WebSocket
-
-function DroneMap({ selectedDrone, onSelectDrone }) {
-  const [drones, setDrones] = useState([]);
+function DroneMap({ drones, selectedDrone, onSelectDrone }) {
   const [popupDrone, setPopupDrone] = useState(null);
-  const [paths, setPaths] = useState({}); // track drone paths
+  const [paths, setPaths] = useState({});
 
+  // Update paths
   useEffect(() => {
-    socket.on("message", (data) => {
-      const features = data?.features || [];
-      setDrones(features);
-
-      // update paths for each drone
-      const newPaths = { ...paths };
-      features.forEach((drone) => {
-        const id = drone?.properties?.serial || Math.random();
-        const coords = drone?.geometry?.coordinates || [0, 0];
-        if (!newPaths[id]) newPaths[id] = [];
-        newPaths[id].push(coords);
-      });
-      setPaths(newPaths);
+    const newPaths = { ...paths };
+    drones.forEach((drone) => {
+      const id = drone?.properties?.serial || Math.random();
+      const coords = drone?.geometry?.coordinates || [0, 0];
+      if (!newPaths[id]) newPaths[id] = [];
+      newPaths[id].push(coords);
     });
+    setPaths(newPaths);
+  }, [drones]);
 
-    return () => socket.off("message");
-  }, [paths]);
-
-  // convert paths to GeoJSON for LineString layer
   const geojsonPaths = {
     type: "FeatureCollection",
     features: Object.keys(paths).map((id) => ({
@@ -52,7 +40,6 @@ function DroneMap({ selectedDrone, onSelectDrone }) {
       mapStyle="mapbox://styles/mapbox/streets-v11"
       mapboxAccessToken={import.meta.env.VITE_MAPBOX_TOKEN}
     >
-      {/* Draw paths */}
       <Source id="paths" type="geojson" data={geojsonPaths}>
         <Layer
           id="line-layer"
@@ -61,11 +48,11 @@ function DroneMap({ selectedDrone, onSelectDrone }) {
         />
       </Source>
 
-      {/* Render drone markers */}
       {drones.map((drone, idx) => {
         const coords = drone?.geometry?.coordinates || [0, 0];
         const registration = drone?.properties?.registration || "";
-        const allowed = registration.split("-")[1]?.startsWith("B"); // green if allowed
+        const allowed = registration.split("-")[1]?.startsWith("B");
+        const yaw = drone?.properties?.yaw || 0;
 
         return (
           <Marker
@@ -73,7 +60,6 @@ function DroneMap({ selectedDrone, onSelectDrone }) {
             longitude={coords[0]}
             latitude={coords[1]}
             anchor="center"
-            rotation={drone?.properties?.yaw || 0}
           >
             <div
               onClick={() => onSelectDrone && onSelectDrone(drone)}
@@ -82,9 +68,9 @@ function DroneMap({ selectedDrone, onSelectDrone }) {
               style={{
                 width: 20,
                 height: 20,
+                transform: `rotate(${yaw}deg)`,
                 backgroundColor: allowed ? "green" : "red",
-                transform: `rotate(${drone?.properties?.yaw || 0}deg)`,
-                borderRadius: "50%",
+                clipPath: "polygon(50% 0%, 0% 100%, 100% 100%)",
                 cursor: "pointer",
               }}
             />
@@ -92,7 +78,6 @@ function DroneMap({ selectedDrone, onSelectDrone }) {
         );
       })}
 
-      {/* Show popup on hover */}
       {popupDrone && (
         <Popup
           longitude={popupDrone.geometry?.coordinates[0]}
@@ -100,7 +85,7 @@ function DroneMap({ selectedDrone, onSelectDrone }) {
           anchor="top"
           closeButton={false}
         >
-          <div style={{ fontSize: "14px" }}>
+          <div>
             <strong>{popupDrone.properties?.Name}</strong>
             <p>Altitude: {popupDrone.properties?.altitude} m</p>
             <p>Flight Time: {popupDrone.properties?.startTime || "N/A"} s</p>
