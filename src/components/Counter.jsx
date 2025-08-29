@@ -1,29 +1,44 @@
+// src/components/Counter.jsx
 import React from "react";
 
-function Counter({ drones }) {
+/**
+ * Counter component
+ * Shows the number of red (not allowed) drones
+ */
+function Counter({ droneList = {} }) {
+  // Convert droneMap object to array
+  const drones = Object.values(droneList);
+
+  // Count drones whose registration does NOT start with "SD-B"
   const redDrones = drones.filter(
-    (drone) => !drone?.properties?.registration?.split("-")[1]?.startsWith("B")
+    (d) => !(d.properties?.registration || "").startsWith("SD-B")
   ).length;
 
   return (
     <div
       style={{
         position: "absolute",
-        bottom: 20,
-        right: 20,
-        background: "rgba(255,255,255,0.9)",
+        bottom: "20px",
+        right: "20px",
+        background: "rgba(255, 0, 0, 0.9)",
+        color: "#fff",
         padding: "10px 15px",
-        borderRadius: "8px",
-        boxShadow: "0 2px 8px rgba(0,0,0,0.2)",
+        borderRadius: "50%",
         fontWeight: "bold",
-        fontFamily: "sans-serif",
-        zIndex: 1000,
-        minWidth: "90px",
+        fontSize: "18px",
         textAlign: "center",
+        boxShadow: "0 2px 8px rgba(0,0,0,0.3)",
+        zIndex: 1000,
+        minWidth: "50px",
+        minHeight: "50px",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        fontFamily: "Arial, sans-serif",
       }}
+      title="Number of red drones"
     >
-      <span style={{ color: "red", fontSize: "16px" }}>❌ Red Drones</span>
-      <p style={{ margin: 0, fontSize: "18px" }}>{redDrones}</p>
+      {redDrones}
     </div>
   );
 }
