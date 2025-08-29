@@ -1,0 +1,7 @@
+* [33meef4d47[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m Add files via upload
+* [33mfadd4a6[m Update README.md
+* [33ma30409a[m[33m ([m[1;32mmain[m[33m)[m Implement the responsive interface.
+* [33m2ba8db9[m | Pattern   | Usage                                                | | --------- | ---------------------------------------------------- | | Singleton | Only one WebSocket instance                          | | Observer  | React state updates Dashboard/List/Map               | | Factory   | Create drone objects with extra properties           | | Strategy  | Choose map rendering method depending on drone count | | Decorator | Add extra info like flight time dynamically          |
+* [33mf0c8484[m change the design of all
+* [33m996bdcd[m upload Drone tracing project to git
+* [33mc4d9590[m[33m ([m[1;36mHEAD[m[33m)[m Initial commit
