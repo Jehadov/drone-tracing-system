@@ -1,5 +1,5 @@
 
-![image alt]([url](https://github.com/Jehadov/drone-tracing-system/blob/main/drone%20tracing%20system.png?raw=true))
+![image alt](https://github.com/Jehadov/drone-tracing-system/blob/main/drone%20tracing%20system.png?raw=true)
 This project provides a responsive dashboard for monitoring drones via WebSocket updates. Features include:
 
 Real-time Drone Tracking: Shows live locations and paths of drones on an interactive Mapbox map.
