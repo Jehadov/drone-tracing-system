@@ -1,12 +1,36 @@
-# React + Vite
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+![image alt](https://github.com/Jehadov/drone-tracing-system/blob/main/drone%20tracing%20system.png?raw=true)
+This project provides a responsive dashboard for monitoring drones via WebSocket updates. Features include:
 
-Currently, two official plugins are available:
+Real-time Drone Tracking: Shows live locations and paths of drones on an interactive Mapbox map.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Drone List: Displays all drones with details, including name, serial, registration, and status.
 
-## Expanding the ESLint configuration
+Dashboard: Counts total drones, allowed drones, and red drones; highlights the top 3 highest drones.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Flight Information: Hover over a drone to see altitude and flight duration in days, hours, and minutes.
+
+Responsive Design: Works across desktops, tablets, and mobile devices.
+
+Red Drone Counter: Always visible at the bottom-right, showing the number of non-allowed drones.
+
+Tech Stack:
+
+Frontend: React, Mapbox GL, CSS
+
+Backend (WebSocket): Socket.IO
+
+State Management: React hooks (useState, useEffect)
+
+Usage:
+
+Clone the repository
+
+Install dependencies: npm install
+
+Run the app: npm run dev
+
+Ensure your backend WebSocket server is running
+
+Goal:
+This project demonstrates real-time data handling, responsive UI design, and clear visualization of drone activity for monitoring and analysis.
